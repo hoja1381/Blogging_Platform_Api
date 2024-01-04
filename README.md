@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) developing a Node.js backend application using NestJS and Postgres Database that serves as a RESTful API for a blogging platform. The API will be used by frontend developers to build the user interface for the platform.
 
 ## Installation
 
