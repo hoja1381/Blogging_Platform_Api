@@ -20,7 +20,7 @@ export class Blog {
   content: string;
 
   @Column()
-  tags: [string];
+  tags: string;
 
   @Column()
   publishDate: Date;
