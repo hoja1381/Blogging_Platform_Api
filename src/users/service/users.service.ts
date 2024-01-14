@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
-import { CRUD_UserDto } from '../dtos/crud_user.dto';
+import { Update_UserDto } from '../dtos/update_user.dto';
 import { Register_UserDto } from '../dtos/register_user.dto';
 
 @Injectable()
@@ -17,21 +17,21 @@ export class UsersService {
   }
 
   // update user in db by id
-  async update(id: string, body: Register_UserDto) {
-    //if there is no id returns NULL
-    if (!id) return null;
+  async update(id: number, body: Update_UserDto) {
+    //if there is no id or body returns NULL
+    if (!id || !Object.keys(body).length) return null;
 
-    // find and update the user
-    const user = await this.repo.findOne({ where: { id } });
+    // find and update the user //not proper solution
+    const user = await this.findById(id);
     if (!user) throw new NotFoundException('user not found');
-    Object.assign(user, body);
 
-    // return result
-    return this.repo.save(user);
+    await this.repo.update({ id: id }, body);
+
+    return await this.findById(id);
   }
 
   // delete user in db by id
-  async delete(id: string) {
+  async delete(id: number) {
     if (!id) return null;
     const user = await this.repo.findOne({ where: { id: id } });
     if (!user)
@@ -46,7 +46,7 @@ export class UsersService {
   }
 
   // find user by id
-  async findById(id: string) {
+  async findById(id: number) {
     if (!id) return null;
     return await this.repo.findOne({ where: { id: id } });
   }

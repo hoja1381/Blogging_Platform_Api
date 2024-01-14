@@ -11,15 +11,15 @@ import { Comment } from 'src/comments/comments.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()

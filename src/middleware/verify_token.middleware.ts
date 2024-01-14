@@ -1,9 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NestMiddleware,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from 'src/users/service/users.service';
 import { User } from 'src/users/user.entity';
@@ -23,7 +18,7 @@ export class VerifyToken implements NestMiddleware {
     next();
   }
 
-  verifyToken(req: any, res: any, next: NextFunction): string {
+  verifyToken(req: any, res: any, next: NextFunction): number {
     const { accessToken } = req.session || {};
 
     if (accessToken) {
