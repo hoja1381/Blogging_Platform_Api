@@ -30,6 +30,19 @@ export class UsersService {
     return await this.findById(id);
   }
 
+  async makeAdmin(id: number, isAdmin: boolean) {
+    //if there is no id  returns NULL
+    if (!id) return null;
+
+    // find and update the user //not proper solution
+    const user = await this.findById(id);
+    if (!user) throw new NotFoundException('user not found');
+
+    await this.repo.update({ id: id }, { isAdmin });
+
+    return await this.findById(id);
+  }
+
   // delete user in db by id
   async delete(id: number) {
     if (!id) return null;

@@ -23,7 +23,4 @@ export class UserDto {
 
   @Expose()
   comments: Comment[];
-
-  @Expose()
-  massage: string; // for the response
 }

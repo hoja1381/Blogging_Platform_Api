@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Session,
   UnauthorizedException,
   UseGuards,
@@ -122,5 +123,14 @@ export class UsersController {
   @UseGuards(AdminGuard)
   async getAllUser() {
     return await this.userService.find();
+  }
+
+  @Post('/makeAdmin/:id')
+  @UseGuards(AdminGuard)
+  async makeAdmin(@Param('id') id: number, @Query('isAdmin') isAdmin: boolean) {
+    if (isAdmin) {
+      return await this.userService.makeAdmin(id, isAdmin);
+    }
+    return await this.userService.makeAdmin(id, true);
   }
 }
