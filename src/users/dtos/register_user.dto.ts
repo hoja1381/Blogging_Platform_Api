@@ -1,9 +1,6 @@
 import { IsEmail, IsString, Max, Min } from 'class-validator';
 
-export class CRUD_UserDto {
-  @IsString()
-  id: string;
-
+export class Register_UserDto {
   @IsEmail()
   email: string;
 
