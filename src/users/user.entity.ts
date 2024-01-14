@@ -1,14 +1,23 @@
 import { Blog } from 'src/blogs/blog.entity';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Comment } from 'src/comments/comments.entity';
 
 @Entity()
 export class User {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @PrimaryColumn()
   email: string;
+
+  @Column()
+  password: string;
 
   @Column()
   username: string;
