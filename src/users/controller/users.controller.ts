@@ -118,8 +118,7 @@ export class UsersController {
   })
   @ApiCookieAuth('session')
   @ApiOkResponse({
-    description: 'return a user json and jwt accessToken as cookie.',
-    type: UserDto,
+    description: 'clear the jwt accessToken from cookie',
   })
   @ApiInternalServerErrorResponse({
     description: 'if occur an err in deleting the cookie session',
