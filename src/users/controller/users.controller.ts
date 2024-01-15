@@ -20,7 +20,7 @@ import { CurrentUser } from 'src/decorators/current_user.decorator';
 import { Update_UserDto } from '../dtos/update_user.dto';
 import { Serialize } from 'src/interceptors/serialazaition.interceptor';
 import { UserDto } from '../dtos/user.dto';
-import { AdminGuard } from 'src/guards/adminastor,guard';
+import { AdminGuard } from 'src/guards/adminastor.guard';
 import {
   ApiBadRequestResponse,
   ApiCookieAuth,

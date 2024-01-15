@@ -13,7 +13,7 @@ export class Blog {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
   @Column()
