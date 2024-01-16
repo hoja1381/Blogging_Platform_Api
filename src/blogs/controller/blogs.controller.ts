@@ -9,7 +9,14 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CurrentUser } from 'src/decorators/current_user.decorator';
 import { BlogsService } from '../service/blogs.service';
 import { Create_blogDto } from '../dtos/create_blog.dto';
@@ -34,6 +41,20 @@ export class BlogsController {
   //CREATE
   @Post('/')
   @UseGuards(LoggedInGuard)
+  @ApiOperation({
+    summary: 'create a blog',
+    description: 'create a new blog. the user should be logged in.',
+  })
+  @ApiCreatedResponse({
+    description: 'return the created blog.',
+    type: BlogDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request if the input data is nor correct.',
+  })
+  @ApiForbiddenResponse({
+    description: 'if you are not logged in',
+  })
   async createBlog(@Body() body: Create_blogDto, @CurrentUser() user: User) {
     return await this.blogService.create(body, user);
   }
@@ -41,6 +62,21 @@ export class BlogsController {
   //UPDATE
   @Put('/:id')
   @UseGuards(LoggedInGuard)
+  @ApiOperation({
+    summary: 'update blog',
+    description:
+      'update blogs. the user can update it own blogs. and admin can update any blog.',
+  })
+  @ApiOkResponse({
+    description: 'return the updated doc.',
+    type: BlogDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request if the input data is nor correct.',
+  })
+  @ApiForbiddenResponse({
+    description: 'if you are not logged in or not an admin',
+  })
   async updateBlog(
     @Body() body: Update_blogDto,
     @Param('id') id: number,
@@ -67,6 +103,18 @@ export class BlogsController {
   //DELETE
   @Delete('/:id')
   @UseGuards(LoggedInGuard)
+  @ApiOperation({
+    summary: 'delete blog',
+    description:
+      'delete blogs. the user can delete it own blogs. and admin can delete any blog.',
+  })
+  @ApiOkResponse({
+    description: 'return the deleted doc.',
+    type: BlogDto,
+  })
+  @ApiForbiddenResponse({
+    description: 'if you are not logged in or not an admin',
+  })
   async deleteBlog(@Param('id') id: number, @CurrentUser() user: User) {
     if (user.isAdmin) {
       return await this.blogService.delete(id);
@@ -88,6 +136,14 @@ export class BlogsController {
 
   //GET ALL BLOGS
   @Get('/')
+  @ApiOperation({
+    summary: 'get all the blogs',
+    description: 'return all the existed blogs.',
+  })
+  @ApiOkResponse({
+    description: 'return all the existed blogs.',
+    type: [BlogDto],
+  })
   async getAllBlogs() {
     return await this.blogService.getAll();
   }
@@ -95,6 +151,14 @@ export class BlogsController {
   // GET ALL BLOGS OF THE USER
   @Get('/myblogs')
   @UseGuards(LoggedInGuard)
+  @ApiOperation({
+    summary: 'get All Blogs Of User',
+    description: 'return all the existed blogs of one user.',
+  })
+  @ApiOkResponse({
+    description: 'return all the existed blogs of one user.',
+    type: [BlogDto],
+  })
   async getAllBlogsOfUser(@CurrentUser() user: User) {
     return await this.blogService.getAllByUser(user);
   }
@@ -102,6 +166,14 @@ export class BlogsController {
   //GET USERS BLOG BY ADMIN
   @Get('/admin/:user_id')
   @UseGuards(AdminGuard)
+  @ApiOperation({
+    summary: 'get All Blogs Of User by admin',
+    description: 'return all the existed blogs of one user by admin.',
+  })
+  @ApiOkResponse({
+    description: 'return all the existed blogs of one user by admin.',
+    type: [BlogDto],
+  })
   async getUsersBlogsByAdmin(@Param('user_id') id: number) {
     const user = await this.userService.findById(id);
     return await this.blogService.getAllByUser(user);
@@ -110,6 +182,14 @@ export class BlogsController {
   //GET BLOG BY ITS ID
   @Get('/:id')
   @UseGuards(AdminGuard)
+  @ApiOperation({
+    summary: 'get one blog by its Id',
+    description: 'return one blog by its id. it is useable by admins',
+  })
+  @ApiOkResponse({
+    description: 'return the blog with the given id.',
+    type: BlogDto,
+  })
   async getBlogById(@Param('id') id: number) {
     return await this.blogService.getById(id);
   }
