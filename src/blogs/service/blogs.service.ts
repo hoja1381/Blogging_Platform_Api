@@ -8,6 +8,7 @@ import { Blog } from '../blog.entity';
 import { Repository } from 'typeorm';
 import { Create_blogDto } from '../dtos/create_blog.dto';
 import { User } from 'src/users/user.entity';
+import { Update_blogDto } from '../dtos/update_blog.dto';
 
 @Injectable()
 export class BlogsService {
@@ -30,7 +31,7 @@ export class BlogsService {
     return await this.repo.save(newBlog);
   }
 
-  async update(id: number, body: any) {
+  async update(id: number, body: Update_blogDto) {
     if (!id || !Object.keys(body).length) return null;
 
     const blog = await this.getById(id);
@@ -51,14 +52,34 @@ export class BlogsService {
   }
 
   async getAll() {
-    return await this.repo.find();
+    return await this.repo.find({
+      relations: { author: true },
+      select: {
+        author: {
+          id: true,
+          username: true,
+          fullName: true,
+        },
+      },
+    });
   }
 
   async getById(id: number) {
     if (!id) return null;
-    return await this.repo.findOne({ where: { id: id } });
+    return await this.repo.findOne({
+      where: { id: id },
+      relations: { author: true },
+      select: {
+        author: {
+          id: true,
+          username: true,
+          fullName: true,
+        },
+      },
+    });
   }
-  async getAllByUser(user: any) {
+
+  async getAllByUser(user: User) {
     if (!user) return null;
 
     return await this.repo.find({ where: { author: user } });
