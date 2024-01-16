@@ -55,24 +55,33 @@ export class UsersService {
 
   // find users by the given info.
   async find() {
-    return await this.repo.find();
+    return await this.repo.find({ relations: { blogs: true, comments: true } });
   }
 
   // find user by id
   async findById(id: number) {
     if (!id) return null;
-    return await this.repo.findOne({ where: { id: id } });
+    return await this.repo.findOne({
+      where: { id: id },
+      relations: { blogs: true, comments: true },
+    });
   }
 
   // find user by email
   async findByEmail(email: string) {
     if (!email) return null;
-    return await this.repo.findOne({ where: { email: email } });
+    return await this.repo.findOne({
+      where: { email: email },
+      relations: { blogs: true, comments: true },
+    });
   }
 
   // find user by username
   async findByUsername(username: string) {
     if (!username) return null;
-    return await this.repo.findOne({ where: { username: username } });
+    return await this.repo.findOne({
+      where: { username: username },
+      relations: { blogs: true, comments: true },
+    });
   }
 }

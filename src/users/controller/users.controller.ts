@@ -29,7 +29,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
@@ -67,7 +66,7 @@ export class UsersController {
       {
         id: newUser.id,
       },
-      process.env.JWT_KEY, // replace with .env later
+      process.env.JWT_KEY,
       { expiresIn: '6h' },
     );
 
@@ -99,7 +98,7 @@ export class UsersController {
       {
         id: user.id,
       },
-      process.env.JWT_KEY, // replace with .env later
+      process.env.JWT_KEY,
       { expiresIn: '6h' },
     );
 

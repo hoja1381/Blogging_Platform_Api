@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-import { Blog } from 'src/blogs/blog.entity';
+import { Expose, Type } from 'class-transformer';
+import { BlogDto } from 'src/blogs/dtos/Blog.dto';
 import { Comment } from 'src/comments/comments.entity';
 
 export class UserDto {
@@ -45,12 +45,14 @@ export class UserDto {
     example: [],
   })
   @Expose()
-  blogs: Blog[];
+  @Type(() => BlogDto)
+  blogs: BlogDto[];
 
   @ApiProperty({
     description: 'shows the user comments.',
     example: [],
   })
   @Expose()
-  comments: Comment[];
+  @Type(() => Comment)
+  comments: [Comment];
 }
