@@ -35,7 +35,7 @@ export class BlogsService {
     if (!id || !Object.keys(body).length) return null;
 
     const blog = await this.getById(id);
-    if (!blog) throw new NotFoundException('user not found');
+    if (!blog) throw new NotFoundException('comment not found');
 
     await this.repo.update({ id: id }, body);
 

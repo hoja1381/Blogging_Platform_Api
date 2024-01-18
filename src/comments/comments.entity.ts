@@ -1,11 +1,11 @@
-import { Blog } from 'src/blogs/blog.entity';
-import { User } from 'src/users/user.entity';
+import { Blog } from '../blogs/blog.entity';
+import { User } from '../users/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   content: string;
@@ -14,8 +14,8 @@ export class Comment {
   date: Date;
 
   @ManyToOne(() => User, (user) => user.comments)
-  user_id: User;
+  user: User;
 
   @ManyToOne(() => Blog, (blog) => blog.comments)
-  blog_id: Comment;
+  blog: Blog;
 }

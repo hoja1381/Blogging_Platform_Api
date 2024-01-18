@@ -1,5 +1,5 @@
-import { Comment } from 'src/comments/comments.entity';
-import { User } from 'src/users/user.entity';
+import { Comment } from '../comments/comments.entity';
+import { User } from '../users/user.entity';
 import {
   Column,
   Entity,
@@ -28,6 +28,6 @@ export class Blog {
   @ManyToOne(() => User, (user) => user.blogs)
   author: User;
 
-  @OneToMany(() => Comment, (comment) => comment.blog_id)
+  @OneToMany(() => Comment, (comment) => comment.blog)
   comments: Blog[];
 }
