@@ -1,4 +1,4 @@
-import { Blog } from 'src/blogs/blog.entity';
+import { Blog } from '../blogs/blog.entity';
 import {
   Column,
   Entity,
@@ -6,7 +6,7 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Comment } from 'src/comments/comments.entity';
+import { Comment } from '../comments/comments.entity';
 
 @Entity()
 export class User {
@@ -31,6 +31,6 @@ export class User {
   @OneToMany(() => Blog, (blog) => blog.author)
   blogs: Blog[];
 
-  @OneToMany(() => Comment, (comment) => comment.user_id)
+  @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
 }
