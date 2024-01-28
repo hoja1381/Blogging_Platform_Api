@@ -217,9 +217,8 @@ export class UsersController {
     return await this.userService.delete(id);
   }
 
-  @Get('/:id')
+  @Get('/admin/:id')
   @UseGuards(AdminGuard)
-  @Delete('/admin/:id')
   @UseGuards(AdminGuard)
   @ApiOperation({
     summary: 'get user by admin ',
@@ -236,11 +235,6 @@ export class UsersController {
   async getUserById(@Param('id') id: number) {
     return await this.userService.findById(id);
   }
-
-  // @Get('/userByEmail/:email')
-  // async getUserByEmail(@Param('email') email: string) {
-  //   return await this.userService.findByEmail(email);
-  // }
 
   @Get('/')
   @UseGuards(AdminGuard)
