@@ -47,12 +47,4 @@ export class UserDto {
   @Expose()
   @Type(() => BlogDto)
   blogs: BlogDto[];
-
-  @ApiProperty({
-    description: 'shows the user comments.',
-    example: [],
-  })
-  @Expose()
-  @Type(() => Comment)
-  comments: [Comment];
 }
