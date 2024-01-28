@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { Blog } from './blogs/blog.entity';
 import { Comment } from './comments/comments.entity';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { Comment } from './comments/comments.entity';
     UsersModule,
     BlogsModule,
     CommentsModule,
+    CacheModule.register({ ttl: 60, isGlobal: true, max: 10000000 }),
   ],
   controllers: [],
   providers: [],

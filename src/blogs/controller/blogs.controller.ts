@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -28,6 +29,8 @@ import { UsersService } from 'src/users/service/users.service';
 import { Update_blogDto } from '../dtos/update_blog.dto';
 import { Serialize } from 'src/interceptors/serialazaition.interceptor';
 import { BlogDto } from '../dtos/Blog.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @ApiTags('blog')
 @Controller('blogs')
@@ -36,6 +39,7 @@ export class BlogsController {
   constructor(
     private blogService: BlogsService,
     private userService: UsersService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   //CREATE
@@ -145,7 +149,14 @@ export class BlogsController {
     type: [BlogDto],
   })
   async getAllBlogs() {
-    return await this.blogService.getAll();
+    const cache = await this.cacheManager.get('all-blogs');
+    if (cache) return cache;
+
+    console.log(1);
+    const blogs = await this.blogService.getAll();
+    await this.cacheManager.set('all-blogs', blogs);
+
+    return blogs;
   }
 
   // GET ALL BLOGS OF THE USER
@@ -160,7 +171,12 @@ export class BlogsController {
     type: [BlogDto],
   })
   async getAllBlogsOfUser(@CurrentUser() user: User) {
-    return await this.blogService.getAllByUser(user);
+    const cache = await this.cacheManager.get(`blogs-${user.id}`);
+    if (cache) return cache;
+
+    const userBlogs = await this.blogService.getAllByUser(user);
+    await this.cacheManager.set(`blogs-${user.id}`, userBlogs);
+    return userBlogs;
   }
 
   //GET USERS BLOG BY ADMIN
@@ -175,8 +191,14 @@ export class BlogsController {
     type: [BlogDto],
   })
   async getUsersBlogsByAdmin(@Param('user_id') id: number) {
+    const cache = await this.cacheManager.get(`blogs-${id}`);
+    if (cache) return cache;
+
     const user = await this.userService.findById(id);
-    return await this.blogService.getAllByUser(user);
+    const userBlogs = await this.blogService.getAllByUser(user);
+
+    await this.cacheManager.set(`blogs-${id}`, userBlogs);
+    return userBlogs;
   }
 
   //GET BLOG BY ITS ID
@@ -191,6 +213,13 @@ export class BlogsController {
     type: BlogDto,
   })
   async getBlogById(@Param('id') id: number) {
-    return await this.blogService.getById(id);
+    const cache = await this.cacheManager.get(id.toString());
+    if (cache) return cache;
+
+    const blog = await this.blogService.getById(id);
+    console.log(id.toString());
+    await this.cacheManager.set(id.toString(), blog);
+
+    return blog;
   }
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   NotFoundException,
   Param,
   Post,
@@ -18,6 +19,8 @@ import { LoggedInGuard } from '../../guards/loggedUser.guard';
 import { UpdateCommentDto } from '../dtos/update_comment.dto';
 import { Comment } from '../comments.entity';
 import { ApiTags } from '@nestjs/swagger';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Controller('comments')
 @ApiTags('comments')
@@ -25,6 +28,7 @@ export class CommentsController {
   constructor(
     private commentService: CommentsService,
     private blogService: BlogsService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   //CREATE
@@ -83,7 +87,14 @@ export class CommentsController {
   @Get('/')
   @UseGuards(LoggedInGuard)
   async getAllUserComments(@CurrentUser() user: User) {
-    return await this.commentService.getAllCommentsOfUser(user);
+    const cache = await this.cacheManager.get(`commentsOfUser-${user.id}`);
+    if (cache) return cache;
+
+    console.log(1);
+    const userComments = await this.commentService.getAllCommentsOfUser(user);
+    await this.cacheManager.set(`commentsOfUser-${user.id}`, userComments);
+
+    return userComments;
   }
 
   //GET ALL BLOG COMMENTS
@@ -92,6 +103,13 @@ export class CommentsController {
   async getAllBlogComments(@Param('blog_id') blog_id: number) {
     const blog = await this.blogService.getById(blog_id);
     if (!blog) throw new NotFoundException('blog Not Found');
-    return await this.commentService.getAllCommentsOfBlog(blog);
+
+    const cache = await this.cacheManager.get(`commentsOfBlog-${blog_id}`);
+    if (cache) return cache;
+
+    const blogComments = await this.commentService.getAllCommentsOfBlog(blog);
+    await this.cacheManager.set(`commentsOfBlog-${blog_id}`, blogComments);
+
+    return blogComments;
   }
 }
