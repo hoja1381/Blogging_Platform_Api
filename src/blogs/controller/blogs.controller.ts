@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -148,12 +149,11 @@ export class BlogsController {
     description: 'return all the existed blogs.',
     type: [BlogDto],
   })
-  async getAllBlogs() {
+  async getAllBlogs(@Query('take') take: number, @Query('skip') skip: number) {
     const cache = await this.cacheManager.get('all-blogs');
     if (cache) return cache;
 
-    console.log(1);
-    const blogs = await this.blogService.getAll();
+    const blogs = await this.blogService.getAll(skip, take);
     await this.cacheManager.set('all-blogs', blogs);
 
     return blogs;

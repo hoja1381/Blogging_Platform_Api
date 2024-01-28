@@ -51,8 +51,8 @@ export class BlogsService {
     return this.repo.remove(blog);
   }
 
-  async getAll() {
-    return await this.repo.find({
+  async getAll(skip = 0, take = 10) {
+    return await this.repo.findAndCount({
       relations: { author: true },
       select: {
         author: {
@@ -61,6 +61,8 @@ export class BlogsService {
           fullName: true,
         },
       },
+      skip: skip,
+      take: take,
     });
   }
 
