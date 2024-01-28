@@ -1,6 +1,7 @@
 import { Comment } from '../comments/comments.entity';
 import { User } from '../users/user.entity';
 import {
+  AfterInsert,
   Column,
   Entity,
   ManyToOne,
@@ -30,4 +31,9 @@ export class Blog {
 
   @OneToMany(() => Comment, (comment) => comment.blog)
   comments: Blog[];
+
+  @AfterInsert()
+  insertLogger() {
+    console.log('blog ADDED  id=' + this.id + ' User=' + this.author.id);
+  }
 }

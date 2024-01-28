@@ -1,5 +1,6 @@
 import { Blog } from '../blogs/blog.entity';
 import {
+  AfterInsert,
   Column,
   Entity,
   OneToMany,
@@ -33,4 +34,9 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
+
+  @AfterInsert()
+  insertLogger() {
+    console.log('user added to the db with id=' + this.id);
+  }
 }

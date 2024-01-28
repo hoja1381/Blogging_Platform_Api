@@ -7,6 +7,8 @@ import { User } from './users/user.entity';
 import { Blog } from './blogs/blog.entity';
 import { Comment } from './comments/comments.entity';
 import { CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerInterceptor } from './interceptors/logging.interceptor';
 
 @Module({
   imports: [
@@ -26,6 +28,6 @@ import { CacheModule } from '@nestjs/cache-manager';
     CacheModule.register({ ttl: 60, isGlobal: true, max: 10000000 }),
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_INTERCEPTOR, useClass: LoggerInterceptor }],
 })
 export class AppModule {}

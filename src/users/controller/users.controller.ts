@@ -11,6 +11,7 @@ import {
   Session,
   UnauthorizedException,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { AuthService } from '../auth/auth.service';

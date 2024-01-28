@@ -1,6 +1,12 @@
 import { Blog } from '../blogs/blog.entity';
 import { User } from '../users/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  AfterInsert,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Comment {
@@ -18,4 +24,16 @@ export class Comment {
 
   @ManyToOne(() => Blog, (blog) => blog.comments)
   blog: Blog;
+
+  @AfterInsert()
+  insertLogger() {
+    console.log(
+      'comment ADDED id=' +
+        this.id +
+        '  BLOG=' +
+        this.blog.id +
+        '  User=' +
+        this.user.id,
+    );
+  }
 }
