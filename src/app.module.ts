@@ -7,8 +7,9 @@ import { User } from './users/user.entity';
 import { Blog } from './blogs/blog.entity';
 import { Comment } from './comments/comments.entity';
 import { CacheModule } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerInterceptor } from './interceptors/logging.interceptor';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -26,8 +27,17 @@ import { LoggerInterceptor } from './interceptors/logging.interceptor';
     BlogsModule,
     CommentsModule,
     CacheModule.register({ ttl: 60, isGlobal: true, max: 10000000 }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
   ],
   controllers: [],
-  providers: [{ provide: APP_INTERCEPTOR, useClass: LoggerInterceptor }],
+  providers: [
+    { provide: APP_INTERCEPTOR, useClass: LoggerInterceptor },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
 })
 export class AppModule {}
