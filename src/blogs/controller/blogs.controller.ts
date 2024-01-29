@@ -17,6 +17,7 @@ import {
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { CurrentUser } from '../../decorators/current_user.decorator';
@@ -150,7 +151,9 @@ export class BlogsController {
     description: 'return all the existed blogs.',
     type: [BlogDto],
   })
-  async getAllBlogs(@Query('take') take = 10, @Query('skip') skip = 0) {
+  @ApiQuery({ name: 'take', required: false, type: Number })
+  @ApiQuery({ name: 'skip', required: false, type: Number })
+  async getAllBlogs(@Query('take') take: number, @Query('skip') skip: number) {
     const cache = await this.cacheManager.get('all-blogs');
     if (cache) return cache;
 
