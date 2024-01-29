@@ -11,17 +11,16 @@ import {
   Session,
   UnauthorizedException,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { AuthService } from '../auth/auth.service';
 import { Register_UserDto } from '../dtos/register_user.dto';
 import { Login_UserDto } from '../dtos/login_user.dto';
-import { CurrentUser } from 'src/decorators/current_user.decorator';
+import { CurrentUser } from '../../decorators/current_user.decorator';
 import { Update_UserDto } from '../dtos/update_user.dto';
-import { Serialize } from 'src/interceptors/serialazaition.interceptor';
+import { Serialize } from '../../interceptors/serialazaition.interceptor';
 import { UserDto } from '../dtos/user.dto';
-import { AdminGuard } from 'src/guards/adminastor.guard';
+import { AdminGuard } from '../../guards/adminastor.guard';
 import {
   ApiBadRequestResponse,
   ApiCookieAuth,
@@ -67,7 +66,7 @@ export class UsersController {
       {
         id: newUser.id,
       },
-      process.env.JWT_KEY,
+      process.env.JWT_KEY || 'HOJA',
       { expiresIn: '6h' },
     );
 
@@ -99,7 +98,7 @@ export class UsersController {
       {
         id: user.id,
       },
-      process.env.JWT_KEY,
+      process.env.JWT_KEY || 'HOJA',
       { expiresIn: '6h' },
     );
 

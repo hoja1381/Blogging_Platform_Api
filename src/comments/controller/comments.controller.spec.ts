@@ -6,6 +6,7 @@ import { CreateCommentDto } from '../dtos/create_commnt.dto';
 import { Blog } from 'src/blogs/blog.entity';
 import { User } from 'src/users/user.entity';
 import { UpdateCommentDto } from '../dtos/update_comment.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('CommentsController', () => {
   let controller: CommentsController;
@@ -60,12 +61,18 @@ describe('CommentsController', () => {
     }),
   };
 
+  let cacheManager = {
+    set: jest.fn(),
+    get: jest.fn((key: string) => Promise.resolve({})),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentsController],
       providers: [
         { provide: CommentsService, useValue: commentService },
         { provide: BlogsService, useValue: blogService },
+        { provide: CACHE_MANAGER, useValue: cacheManager },
       ],
     }).compile();
 
@@ -102,6 +109,7 @@ describe('CommentsController', () => {
           { content: 'testing', blog_id: null } as CreateCommentDto,
           { id: 1, username: 'hoja' } as User,
         );
+        expect(true).toBe(false);
       } catch (err) {
         expect(err).toBeDefined();
       }
@@ -130,6 +138,7 @@ describe('CommentsController', () => {
           { id: 1, username: 'hoja' } as User,
           null,
         );
+        expect(true).toBe(false);
       } catch (err) {
         expect(err).toBeDefined();
       }
@@ -142,6 +151,7 @@ describe('CommentsController', () => {
           { id: 1, username: 'hoja' } as User,
           1,
         );
+        expect(true).toBe(false);
       } catch (err) {
         expect(err).toBeDefined();
       }
@@ -158,6 +168,7 @@ describe('CommentsController', () => {
     it('should throw err if there is no user', async () => {
       try {
         await controller.deleteComment(1, null);
+        expect(true).toBe(false);
       } catch (err) {
         expect(err).toBeDefined();
       }
@@ -168,6 +179,7 @@ describe('CommentsController', () => {
     it('should throw err if id', async () => {
       try {
         await controller.getAllBlogComments(null);
+        expect(true).toBe(false);
       } catch (err) {
         expect(err).toBeDefined();
       }

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { BlogDto } from 'src/blogs/dtos/Blog.dto';
-import { Comment } from 'src/comments/comments.entity';
+import { BlogDto } from '../../blogs/dtos/Blog.dto';
 
 export class UserDto {
   @ApiProperty({

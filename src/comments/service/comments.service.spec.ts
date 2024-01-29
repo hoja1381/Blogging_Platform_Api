@@ -3,11 +3,9 @@ import { CommentsService } from './comments.service';
 import { Blog } from '../../blogs/blog.entity';
 import { User } from '../../users/user.entity';
 import { CreateCommentDto } from '../dtos/create_commnt.dto';
-import { randomInt } from 'crypto';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Comment } from '../comments.entity';
 import { UpdateCommentDto } from '../dtos/update_comment.dto';
-import { NotFoundException } from '@nestjs/common';
 
 describe('CommentsService', () => {
   let service: CommentsService;
@@ -89,7 +87,6 @@ describe('CommentsService', () => {
       const body = new UpdateCommentDto();
       body.content = 'better blog';
 
-      console.log(await service.update(id, body));
       expect(await service.update(id, body)).toEqual({ id: 1 });
     });
 

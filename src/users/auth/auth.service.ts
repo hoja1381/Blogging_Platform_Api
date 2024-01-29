@@ -2,8 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { bcrypt } from 'bcrypt';
 import { Register_UserDto } from '../dtos/register_user.dto';
-import { error } from 'console';
-import { Hash } from 'crypto';
 
 const bcrypt = require('bcrypt');
 
@@ -12,7 +10,6 @@ export class AuthService {
   constructor(private userService: UsersService) {}
 
   async register(userInfo: Register_UserDto) {
-    
     const duplicatedEmailUser = await this.userService.findByEmail(
       userInfo.email,
     );

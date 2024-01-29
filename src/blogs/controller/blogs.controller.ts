@@ -19,16 +19,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CurrentUser } from 'src/decorators/current_user.decorator';
+import { CurrentUser } from '../../decorators/current_user.decorator';
 import { BlogsService } from '../service/blogs.service';
 import { Create_blogDto } from '../dtos/create_blog.dto';
-import { User } from 'src/users/user.entity';
-import { LoggedInGuard } from 'src/guards/loggedUser.guard';
+import { User } from '../../users/user.entity';
+import { LoggedInGuard } from '../../guards/loggedUser.guard';
 import { Blog } from '../blog.entity';
-import { AdminGuard } from 'src/guards/adminastor.guard';
-import { UsersService } from 'src/users/service/users.service';
+import { AdminGuard } from '../../guards/adminastor.guard';
+import { UsersService } from '../../users/service/users.service';
 import { Update_blogDto } from '../dtos/update_blog.dto';
-import { Serialize } from 'src/interceptors/serialazaition.interceptor';
+import { Serialize } from '../../interceptors/serialazaition.interceptor';
 import { BlogDto } from '../dtos/Blog.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -87,7 +87,7 @@ export class BlogsController {
     @Param('id') id: number,
     @CurrentUser() user: User,
   ) {
-    if (user.isAdmin) {
+    if (user?.isAdmin) {
       return await this.blogService.update(id, body);
     }
 
@@ -96,6 +96,7 @@ export class BlogsController {
     userBlogs.forEach((blog) => {
       if (blog.id == id) currentUserBlog = blog;
     });
+
     if (currentUserBlog) {
       return await this.blogService.update(id, body);
     } else {
@@ -149,7 +150,7 @@ export class BlogsController {
     description: 'return all the existed blogs.',
     type: [BlogDto],
   })
-  async getAllBlogs(@Query('take') take: number, @Query('skip') skip: number) {
+  async getAllBlogs(@Query('take') take = 10, @Query('skip') skip = 0) {
     const cache = await this.cacheManager.get('all-blogs');
     if (cache) return cache;
 
