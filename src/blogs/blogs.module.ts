@@ -7,7 +7,11 @@ import { UsersService } from 'src/users/service/users.service';
 import { User } from 'src/users/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Blog]), TypeOrmModule.forFeature([User])],
+  imports: [
+    //set up TypeOrm Table
+    TypeOrmModule.forFeature([Blog]),
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [BlogsController],
   providers: [BlogsService, UsersService],
 })

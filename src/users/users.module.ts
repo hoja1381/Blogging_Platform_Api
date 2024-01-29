@@ -7,11 +7,15 @@ import { User } from './user.entity';
 import { VerifyToken } from 'src/middleware/verify_token.middleware';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    //set up TypeOrm Table
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [UsersController],
   providers: [UsersService, AuthService],
 })
 export class UsersModule {
+  //use custom middleware for verify jwt tokens
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(VerifyToken).forRoutes('*');
   }

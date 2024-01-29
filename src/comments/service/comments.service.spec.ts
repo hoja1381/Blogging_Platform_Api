@@ -8,7 +8,10 @@ import { Comment } from '../comments.entity';
 import { UpdateCommentDto } from '../dtos/update_comment.dto';
 
 describe('CommentsService', () => {
+  // Service instance
   let service: CommentsService;
+
+  // mocked repo
   let repo = {
     create: jest.fn((body) => body),
 
@@ -39,6 +42,7 @@ describe('CommentsService', () => {
   };
 
   beforeEach(async () => {
+    // set the module
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommentsService,
@@ -46,6 +50,7 @@ describe('CommentsService', () => {
       ],
     }).compile();
 
+    // get the service
     service = module.get<CommentsService>(CommentsService);
   });
 

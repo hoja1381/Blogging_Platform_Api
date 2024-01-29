@@ -5,8 +5,10 @@ import { AuthService } from '../auth/auth.service';
 import { Register_UserDto } from '../dtos/register_user.dto';
 
 describe('UsersController', () => {
+  //controller instance
   let controller: UsersController;
 
+  // mocked services
   let userService = {};
   let authService = {
     register: jest.fn((body) => Promise.resolve({ id: 1, ...body })),
@@ -16,14 +18,17 @@ describe('UsersController', () => {
   };
 
   beforeEach(async () => {
+    //set the module
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
+        //provide the mocked values
         { provide: UsersService, useValue: userService },
         { provide: AuthService, useValue: authService },
       ],
     }).compile();
 
+    // get the controller
     controller = module.get<UsersController>(UsersController);
   });
 

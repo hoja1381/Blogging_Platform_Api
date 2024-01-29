@@ -8,8 +8,10 @@ import { User } from 'src/users/user.entity';
 import { Update_blogDto } from '../dtos/update_blog.dto';
 
 describe('BlogsController', () => {
+  // controller instance
   let controller: BlogsController;
 
+  // mocked services
   let blogService = {
     create: jest.fn((body: Create_blogDto, user: User) => {
       return Promise.resolve({ ...body, user });
@@ -41,6 +43,7 @@ describe('BlogsController', () => {
   };
 
   beforeEach(async () => {
+    // set the module
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BlogsController],
       providers: [
@@ -50,6 +53,7 @@ describe('BlogsController', () => {
       ],
     }).compile();
 
+    // get the controller
     controller = module.get<BlogsController>(BlogsController);
   });
 
@@ -122,7 +126,7 @@ describe('BlogsController', () => {
 
   describe('get  Blogs', () => {
     it('should return all Blogs.', async () => {
-      expect(await controller.getAllBlogs()).toBeDefined();
+      expect(await controller.getAllBlogs(10, 0)).toBeDefined();
     });
 
     it('should return one User Blogs.', async () => {

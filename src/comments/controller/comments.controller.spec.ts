@@ -9,8 +9,10 @@ import { UpdateCommentDto } from '../dtos/update_comment.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('CommentsController', () => {
+  // controller Instance
   let controller: CommentsController;
 
+  // mocked services
   let commentService = {
     create: jest.fn(async (body: CreateCommentDto, blog: Blog, user: User) => {
       return {
@@ -49,7 +51,6 @@ describe('CommentsController', () => {
       };
     }),
   };
-
   let blogService = {
     getById: jest.fn(async (id: number) => {
       if (!id) return null;
@@ -60,13 +61,13 @@ describe('CommentsController', () => {
       };
     }),
   };
-
   let cacheManager = {
     set: jest.fn(),
     get: jest.fn((key: string) => Promise.resolve({})),
   };
 
   beforeEach(async () => {
+    //set the module
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentsController],
       providers: [
@@ -76,6 +77,7 @@ describe('CommentsController', () => {
       ],
     }).compile();
 
+    //get the controller
     controller = module.get<CommentsController>(CommentsController);
   });
 

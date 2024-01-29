@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreateCommentDto {
+  //content
   @IsString()
   @ApiProperty({
     description: 'the content of the comment.',
@@ -9,6 +10,7 @@ export class CreateCommentDto {
   })
   content: string;
 
+  //blog_id
   @IsNumber()
   @ApiProperty({
     description: 'the blog_id of the comment.',

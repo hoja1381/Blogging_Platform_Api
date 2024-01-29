@@ -13,6 +13,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    // typeORM config
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -23,9 +24,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       entities: [User, Blog, Comment],
       synchronize: true,
     }),
+
+    //imported modules
     UsersModule,
     BlogsModule,
     CommentsModule,
+
+    //setUp caching system
     CacheModule.register({ ttl: 60, isGlobal: true, max: 10000000 }),
     ThrottlerModule.forRoot([
       {
@@ -36,7 +41,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
   ],
   controllers: [],
   providers: [
+    //logger
     { provide: APP_INTERCEPTOR, useClass: LoggerInterceptor },
+
+    // request rate limit
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })

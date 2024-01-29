@@ -2,17 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 class Author {
+  //id
   @Expose()
   id: number;
 
+  //username
   @Expose()
   username: string;
 
+  //fullName
   @Expose()
   fullName: string;
 }
 
 export class BlogDto {
+  //id
   @ApiProperty({
     description: 'id of the blog',
     example: 12,
@@ -20,6 +24,7 @@ export class BlogDto {
   @Expose()
   id: number;
 
+  //title
   @ApiProperty({
     description: 'title of the blog',
     example: 'blog',
@@ -27,6 +32,7 @@ export class BlogDto {
   @Expose()
   title: string;
 
+  //content
   @ApiProperty({
     description: 'content of the blog',
     example: 'TEXT',
@@ -34,6 +40,7 @@ export class BlogDto {
   @Expose()
   content: string;
 
+  //tags
   @ApiProperty({
     description: 'tags of the blog',
     example: 'tag',
@@ -41,6 +48,7 @@ export class BlogDto {
   @Expose()
   tags: string;
 
+  //publishDate
   @ApiProperty({
     description: 'publishDate of the blog',
     example: '12-12-2002',
@@ -48,6 +56,7 @@ export class BlogDto {
   @Expose()
   publishDate: Date;
 
+  //author
   @ApiProperty({
     description: 'author of the blog',
     example: {},

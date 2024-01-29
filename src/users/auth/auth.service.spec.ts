@@ -5,8 +5,10 @@ import { User } from '../user.entity';
 import { Register_UserDto } from '../dtos/register_user.dto';
 
 describe('AuthService', () => {
+  // Service instance
   let service: AuthService;
 
+  //mocked Service
   let userService = {
     findByEmail: jest.fn(),
     findByUsername: jest.fn(),
@@ -14,6 +16,7 @@ describe('AuthService', () => {
   };
 
   beforeEach(async () => {
+    // set the module
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -21,6 +24,7 @@ describe('AuthService', () => {
       ],
     }).compile();
 
+    //get the service
     service = module.get<AuthService>(AuthService);
   });
 

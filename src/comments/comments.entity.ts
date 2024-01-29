@@ -10,21 +10,27 @@ import {
 
 @Entity()
 export class Comment {
+  //id
   @PrimaryGeneratedColumn()
   id: number;
 
+  //content
   @Column()
   content: string;
 
+  //date
   @Column()
   date: Date;
 
+  //user
   @ManyToOne(() => User, (user) => user.comments)
   user: User;
 
+  //blog
   @ManyToOne(() => Blog, (blog) => blog.comments)
   blog: Blog;
 
+  //insert Logger
   @AfterInsert()
   insertLogger() {
     console.log(

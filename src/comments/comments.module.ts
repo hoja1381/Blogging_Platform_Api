@@ -8,6 +8,7 @@ import { BlogsService } from 'src/blogs/service/blogs.service';
 
 @Module({
   imports: [
+    //set up TypeOrm Tables
     TypeOrmModule.forFeature([Comment]),
     TypeOrmModule.forFeature([Blog]),
   ],

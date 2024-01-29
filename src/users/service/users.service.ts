@@ -70,6 +70,7 @@ export class UsersService {
   // find user by email
   async findByEmail(email: string) {
     if (!email) return null;
+
     return await this.repo.findOne({
       where: { email: email },
       relations: { blogs: true, comments: true },
@@ -79,6 +80,7 @@ export class UsersService {
   // find user by username
   async findByUsername(username: string) {
     if (!username) return null;
+
     return await this.repo.findOne({
       where: { username: username },
       relations: { blogs: true, comments: true },

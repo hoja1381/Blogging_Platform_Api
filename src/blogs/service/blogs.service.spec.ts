@@ -6,8 +6,10 @@ import { Create_blogDto } from '../dtos/create_blog.dto';
 import { User } from 'src/users/user.entity';
 
 describe('BlogsService', () => {
+  //service instance
   let service: BlogsService;
 
+  // mocked repo
   let repo = {
     findOne: jest.fn(),
     create: jest.fn((body) => Promise.resolve({ ...body } as Blog)),
@@ -17,6 +19,7 @@ describe('BlogsService', () => {
   };
 
   beforeEach(async () => {
+    // set the module
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BlogsService,
@@ -24,6 +27,7 @@ describe('BlogsService', () => {
       ],
     }).compile();
 
+    //get service
     service = module.get<BlogsService>(BlogsService);
   });
 

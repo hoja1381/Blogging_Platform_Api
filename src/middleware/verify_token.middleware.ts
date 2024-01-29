@@ -1,24 +1,29 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from 'src/users/service/users.service';
-import { User } from 'src/users/user.entity';
 
 const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class VerifyToken implements NestMiddleware {
+  //DI
   constructor(private userService: UsersService) {}
 
+  // USE func.
   async use(req: any, res: any, next: NextFunction) {
+    // verify token and get the user
     const user_id = this.verifyToken(req, res, next);
     const user = await this.userService.findById(user_id);
 
+    //set user in req
     req.user = user;
 
     next();
   }
 
+  //verifyToken
   verifyToken(req: any, res: any, next: NextFunction): number {
+    // get token from cookie session
     const { accessToken } = req.session || {};
 
     if (accessToken) {

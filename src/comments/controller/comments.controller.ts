@@ -29,8 +29,10 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 
 @Controller('comments')
+//swagger
 @ApiTags('comments')
 export class CommentsController {
+  //DI
   constructor(
     private commentService: CommentsService,
     private blogService: BlogsService,
@@ -40,6 +42,8 @@ export class CommentsController {
   //CREATE
   @Post('/')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'adding comment on a blog',
     description:
@@ -52,6 +56,8 @@ export class CommentsController {
   @ApiNotFoundResponse({
     description: 'return NotFoundException if the blog_id is not found.',
   })
+
+  //add Comment
   async addComment(@Body() body: CreateCommentDto, @CurrentUser() user: User) {
     const blog = await this.blogService.getById(body.blog_id);
     if (!blog) throw new NotFoundException('Blog Not Found');
@@ -62,6 +68,8 @@ export class CommentsController {
   //UPDATE
   @Put('/:id')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'editing comment on a blog',
     description:
@@ -74,6 +82,8 @@ export class CommentsController {
   @ApiNotFoundResponse({
     description: 'return NotFoundException if the blog_id is not found.',
   })
+
+  //editComment
   async editComment(
     @Body() body: UpdateCommentDto,
     @CurrentUser() user: User,
@@ -95,6 +105,8 @@ export class CommentsController {
   //DELETE
   @Delete('/:id')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'deleting comment on a blog',
     description:
@@ -107,6 +119,8 @@ export class CommentsController {
   @ApiNotFoundResponse({
     description: 'return NotFoundException if the blog_id is not found.',
   })
+
+  //deleteComment
   async deleteComment(@Param('id') id: number, @CurrentUser() user: User) {
     if (user.isAdmin) {
       return this.commentService.delete(id);
@@ -128,6 +142,8 @@ export class CommentsController {
   //GET ALL USER COMMENTS
   @Get('/')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'return all the comments by one user',
     description: 'return all the comments by one user',
@@ -138,6 +154,8 @@ export class CommentsController {
   @ApiNotFoundResponse({
     description: 'return NotFoundException if the user has no comments.',
   })
+
+  //getAllUserComments
   async getAllUserComments(@CurrentUser() user: User) {
     const cache = await this.cacheManager.get(`commentsOfUser-${user.id}`);
     if (cache) return cache;
@@ -151,6 +169,8 @@ export class CommentsController {
   //GET ALL BLOG COMMENTS
   @Get('/:blog_id')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'return all the comments of one blog',
     description: 'return all the comments of one blog',
@@ -161,6 +181,8 @@ export class CommentsController {
   @ApiNotFoundResponse({
     description: 'return NotFoundException if the blog_id is not found.',
   })
+
+  //getAllBlogComments
   async getAllBlogComments(@Param('blog_id') blog_id: number) {
     const blog = await this.blogService.getById(blog_id);
     if (!blog) throw new NotFoundException('blog Not Found');

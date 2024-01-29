@@ -38,6 +38,7 @@ import { Cache } from 'cache-manager';
 @Controller('blogs')
 @Serialize(BlogDto)
 export class BlogsController {
+  //DI
   constructor(
     private blogService: BlogsService,
     private userService: UsersService,
@@ -47,6 +48,8 @@ export class BlogsController {
   //CREATE
   @Post('/')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'create a blog',
     description: 'create a new blog. the user should be logged in.',
@@ -61,6 +64,8 @@ export class BlogsController {
   @ApiForbiddenResponse({
     description: 'if you are not logged in',
   })
+
+  //create Blog
   async createBlog(@Body() body: Create_blogDto, @CurrentUser() user: User) {
     return await this.blogService.create(body, user);
   }
@@ -68,6 +73,8 @@ export class BlogsController {
   //UPDATE
   @Put('/:id')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'update blog',
     description:
@@ -83,6 +90,8 @@ export class BlogsController {
   @ApiForbiddenResponse({
     description: 'if you are not logged in or not an admin',
   })
+
+  //update Blog
   async updateBlog(
     @Body() body: Update_blogDto,
     @Param('id') id: number,
@@ -110,6 +119,8 @@ export class BlogsController {
   //DELETE
   @Delete('/:id')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'delete blog',
     description:
@@ -122,6 +133,8 @@ export class BlogsController {
   @ApiForbiddenResponse({
     description: 'if you are not logged in or not an admin',
   })
+
+  //delete Blog
   async deleteBlog(@Param('id') id: number, @CurrentUser() user: User) {
     if (user.isAdmin) {
       return await this.blogService.delete(id);
@@ -143,6 +156,8 @@ export class BlogsController {
 
   //GET ALL BLOGS
   @Get('/')
+
+  //swagger
   @ApiOperation({
     summary: 'get all the blogs',
     description: 'return all the existed blogs.',
@@ -153,6 +168,8 @@ export class BlogsController {
   })
   @ApiQuery({ name: 'take', required: false, type: Number })
   @ApiQuery({ name: 'skip', required: false, type: Number })
+
+  //getAll Blogs
   async getAllBlogs(@Query('take') take: number, @Query('skip') skip: number) {
     const cache = await this.cacheManager.get('all-blogs');
     if (cache) return cache;
@@ -166,6 +183,8 @@ export class BlogsController {
   // GET ALL BLOGS OF THE USER
   @Get('/myblogs')
   @UseGuards(LoggedInGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'get All Blogs Of User',
     description: 'return all the existed blogs of one user.',
@@ -174,6 +193,8 @@ export class BlogsController {
     description: 'return all the existed blogs of one user.',
     type: [BlogDto],
   })
+
+  //get All Blogs Of User
   async getAllBlogsOfUser(@CurrentUser() user: User) {
     const cache = await this.cacheManager.get(`blogs-${user.id}`);
     if (cache) return cache;
@@ -186,6 +207,8 @@ export class BlogsController {
   //GET USERS BLOG BY ADMIN
   @Get('/admin/:user_id')
   @UseGuards(AdminGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'get All Blogs Of User by admin',
     description: 'return all the existed blogs of one user by admin.',
@@ -194,6 +217,8 @@ export class BlogsController {
     description: 'return all the existed blogs of one user by admin.',
     type: [BlogDto],
   })
+
+  //get Users Blogs By Admin
   async getUsersBlogsByAdmin(@Param('user_id') id: number) {
     const cache = await this.cacheManager.get(`blogs-${id}`);
     if (cache) return cache;
@@ -208,6 +233,8 @@ export class BlogsController {
   //GET BLOG BY ITS ID
   @Get('/:id')
   @UseGuards(AdminGuard)
+
+  //swagger
   @ApiOperation({
     summary: 'get one blog by its Id',
     description: 'return one blog by its id. it is useable by admins',
@@ -216,6 +243,8 @@ export class BlogsController {
     description: 'return the blog with the given id.',
     type: BlogDto,
   })
+
+  //get Blog By Id
   async getBlogById(@Param('id') id: number) {
     const cache = await this.cacheManager.get(id.toString());
     if (cache) return cache;
