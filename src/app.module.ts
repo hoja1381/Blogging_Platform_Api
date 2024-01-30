@@ -31,7 +31,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     CommentsModule,
 
     //setUp caching system
-    CacheModule.register({ ttl: 60, isGlobal: true, max: 10000000 }),
+    CacheModule.register({ ttl: 60000, isGlobal: true, max: 10000000 }),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,

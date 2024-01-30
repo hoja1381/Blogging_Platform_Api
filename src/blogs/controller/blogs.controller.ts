@@ -171,11 +171,11 @@ export class BlogsController {
 
   //getAll Blogs
   async getAllBlogs(@Query('take') take: number, @Query('skip') skip: number) {
-    const cache = await this.cacheManager.get('all-blogs');
+    const cache = await this.cacheManager.get(`all-blogs-${take}-${skip}`);
     if (cache) return cache;
 
     const blogs = await this.blogService.getAll(skip, take);
-    await this.cacheManager.set('all-blogs', blogs);
+    await this.cacheManager.set(`all-blogs-${take}-${skip}`, blogs);
 
     return blogs;
   }
