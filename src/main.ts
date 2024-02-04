@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { GlobalException } from './filters/global_exception.filter';
 
 const dotenv = require('dotenv');
 const cookieSession = require('cookie-session');
@@ -15,6 +16,8 @@ async function bootstrap() {
 
   // set validation pipes
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  app.useGlobalFilters(new GlobalException());
 
   // swagger configuration
   const config = new DocumentBuilder()
