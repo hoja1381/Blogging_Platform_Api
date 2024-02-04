@@ -10,9 +10,9 @@ describe('AuthService', () => {
 
   //mocked Service
   let userService = {
-    findByEmail: jest.fn(),
-    findByUsername: jest.fn(),
-    create: jest.fn((info) => Promise.resolve(info)),
+    findByEmail: jest.fn().mockResolvedValue(undefined),
+    findByUsername: jest.fn().mockResolvedValue(undefined),
+    create: jest.fn().mockImplementation((info) => Promise.resolve(info)),
   };
 
   beforeEach(async () => {
@@ -34,9 +34,10 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should throw an err of there is a duplicated user by email.', async () => {
-      userService.findByEmail.mockReturnValue((email: string) =>
+      userService.findByEmail.mockImplementation((email: string) =>
         Promise.resolve({ email: email } as User),
       );
+
       try {
         await service.register({ email: '@g.com' } as Register_UserDto);
         expect(true).toBe(false);
@@ -46,7 +47,7 @@ describe('AuthService', () => {
     });
 
     it('should throw an err of there is a duplicated user by username.', async () => {
-      userService.findByUsername.mockReturnValue((username: string) =>
+      userService.findByUsername.mockImplementation((username: string) =>
         Promise.resolve({ username: username } as User),
       );
       try {
@@ -55,6 +56,23 @@ describe('AuthService', () => {
       } catch (err) {
         expect(err).toBeDefined();
       }
+    });
+
+    it('should hash the password', async () => {
+      userService.findByEmail.mockResolvedValue(undefined);
+      userService.findByUsername.mockResolvedValue(undefined);
+      const password = '1234';
+      expect(await service.register({ password } as Register_UserDto)).not.toBe(
+        password,
+      );
+    });
+
+    it('should return a registered user', async () => {
+      const user = new Register_UserDto();
+      user.password = '1234';
+      user.email = 'fake@g.com';
+
+      expect(await service.register(user)).toBe(user);
     });
   });
 
