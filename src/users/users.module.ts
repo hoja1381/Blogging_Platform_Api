@@ -13,6 +13,7 @@ import { VerifyToken } from 'src/middleware/verify_token.middleware';
   ],
   controllers: [UsersController],
   providers: [UsersService, AuthService],
+  exports: [UsersService],
 })
 export class UsersModule {
   //use custom middleware for verify jwt tokens

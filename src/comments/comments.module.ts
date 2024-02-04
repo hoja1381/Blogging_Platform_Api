@@ -4,15 +4,15 @@ import { CommentsService } from './service/comments.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from './comments.entity';
 import { Blog } from 'src/blogs/blog.entity';
-import { BlogsService } from 'src/blogs/service/blogs.service';
+import { BlogsModule } from 'src/blogs/blogs.module';
 
 @Module({
   imports: [
     //set up TypeOrm Tables
-    TypeOrmModule.forFeature([Comment]),
-    TypeOrmModule.forFeature([Blog]),
+    TypeOrmModule.forFeature([Comment, Blog]),
+    BlogsModule,
   ],
   controllers: [CommentsController],
-  providers: [CommentsService, BlogsService],
+  providers: [CommentsService],
 })
 export class CommentsModule {}
