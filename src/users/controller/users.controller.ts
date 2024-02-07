@@ -75,7 +75,7 @@ export class UsersController {
       {
         id: newUser.id,
       },
-      this.configService.get('JWT_KEY'),
+      this.configService.get('JWT_KEY') || 'hoja',
       { expiresIn: '6h' },
     );
 
@@ -107,13 +107,11 @@ export class UsersController {
   async login(@Body() body: Login_UserDto, @Session() session: any) {
     const user = await this.authService.login(body.email, body.password);
 
-    console.log(this.configService.get('JWT_KEY'));
-
     const accessToken = jwt.sign(
       {
         id: user.id,
       },
-      this.configService.get('JWT_KEY'),
+      this.configService.get('JWT_KEY') || 'hoja',
       { expiresIn: '6h' },
     );
 
