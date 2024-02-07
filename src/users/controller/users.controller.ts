@@ -33,7 +33,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 
 const jwt = require('jsonwebtoken');
 
@@ -106,6 +106,8 @@ export class UsersController {
   //login
   async login(@Body() body: Login_UserDto, @Session() session: any) {
     const user = await this.authService.login(body.email, body.password);
+
+    console.log(this.configService.get('JWT_KEY'));
 
     const accessToken = jwt.sign(
       {
