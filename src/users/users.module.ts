@@ -5,6 +5,7 @@ import { AuthService } from './auth/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { VerifyToken } from 'src/middleware/verify_token.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [

@@ -3,16 +3,17 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { GlobalException } from './filters/global_exception.filter';
+import { ConfigService } from '@nestjs/config';
 
-const dotenv = require('dotenv');
 const cookieSession = require('cookie-session');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  dotenv.config();
+
+  const configService = app.get(ConfigService);
 
   // cookie session configuration
-  app.use(cookieSession({ keys: [process.env.COOKIE_SESSION_KEY] }));
+  app.use(cookieSession({ keys: [configService.get('COOKIE_SESSION_KEY')] }));
 
   // set validation pipes
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
@@ -31,6 +32,6 @@ async function bootstrap() {
   SwaggerModule.setup('api-doc', app, document);
 
   // listening on port 3000
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(configService.get('PORT') || 3000);
 }
 bootstrap();

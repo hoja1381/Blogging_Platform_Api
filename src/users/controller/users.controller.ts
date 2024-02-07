@@ -33,6 +33,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const jwt = require('jsonwebtoken');
 
@@ -43,6 +44,7 @@ export class UsersController {
   constructor(
     private userService: UsersService,
     private authService: AuthService,
+    private configService: ConfigService,
   ) {}
 
   // Auth Routes
@@ -73,7 +75,7 @@ export class UsersController {
       {
         id: newUser.id,
       },
-      process.env.JWT_KEY || 'HOJA',
+      this.configService.get('JWT_KEY'),
       { expiresIn: '6h' },
     );
 
@@ -109,7 +111,7 @@ export class UsersController {
       {
         id: user.id,
       },
-      process.env.JWT_KEY || 'HOJA',
+      this.configService.get('JWT_KEY'),
       { expiresIn: '6h' },
     );
 
