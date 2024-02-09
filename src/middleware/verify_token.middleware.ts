@@ -1,13 +1,17 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from 'src/users/service/users.service';
+import { ConfigService } from '@nestjs/config';
 
 const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class VerifyToken implements NestMiddleware {
   //DI
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private configService: ConfigService,
+  ) {}
 
   // USE func.
   async use(req: any, res: any, next: NextFunction) {
@@ -30,7 +34,7 @@ export class VerifyToken implements NestMiddleware {
       // verify the TOKEN
       const user_id = jwt.verify(
         accessToken,
-        process.env.JWT_key,
+        process.env.JWT_KEY,
         (err, user) => {
           if (err) {
             throw new ForbiddenException(err);
