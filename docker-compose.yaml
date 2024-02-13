@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   blogapi:
-    image: blogapi:5
+    image: hoja1381/blogapi:latest
     ports:
       - 3000:3000
     environment:
