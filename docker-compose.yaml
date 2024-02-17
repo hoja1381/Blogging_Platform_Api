@@ -3,12 +3,11 @@ version: '3.8'
 services:
   blogapi:
     image: hoja1381/blogapi:latest
-    ports:
-      - 3000:3000
+    network_mode: host
     environment:
-      - DB_HOST=host.docker.internal
+      - DB_HOST=localhost
       - DB_PORT=5432
-      - DB_USERNAME=postgres
+      - DB_USERNAME=hoja1
       - DB_PASSWORD=hoja
       - DB_DATABASE=hoja
       - COOKIE_SESSION_KEY="hoja"
